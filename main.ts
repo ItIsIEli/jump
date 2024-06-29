@@ -1,7 +1,34 @@
+namespace SpriteKind {
+    export const Door = SpriteKind.create()
+}
+let list: tiles.Location[] = []
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     PEW_PEW_GO_THAT_WAY = 4
+    mySprite.setImage(img`
+        . . f f f . . . . . . . . . . . 
+        . f f f f f f f f . . . . f . . 
+        . f e d f e d f e f . . f a f . 
+        . f e d f e d f e f . f c a c f 
+        . f e d d e d d e f . f c c c f 
+        . f e e e e e e e f f f f c f . 
+        . f e e e e e e e e e e e e e f 
+        . . f e e f f f f f f f f f f . 
+        . . f e e e e e e e f . . . . . 
+        . . f e e e e e f e f . . . . . 
+        . . f e e e e e e e f . . . . . 
+        . . . f e e e e e e e f . . . . 
+        . . . f e e e e e e e f . . . . 
+        . . . f e e e e e e e f . . . . 
+        . . . f e e e e e e e f . . . . 
+        . . . f e e e e e e e f . . . . 
+        `)
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (mySprite.vy == 0) {
+        mySprite.vy = -150
+    }
+})
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (PEW_PEW_GO_THAT_WAY == 1) {
         projectile = sprites.createProjectileFromSprite(img`
             . . . . . . . . . . . . . . . . 
@@ -21,8 +48,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `, mySprite, 100, 0)
-    }
-    if (PEW_PEW_GO_THAT_WAY == 2) {
+    } else if (PEW_PEW_GO_THAT_WAY == 3) {
         projectile = sprites.createProjectileFromSprite(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -31,73 +57,127 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
-            . c . c . . . . . . . . . . . . 
-            . . c . c . . . . . . a a . . . 
-            . e e e e e e e e e e e a a . . 
-            . . c . c . . . . . . a . . . . 
-            . c . c . . . . . . . . . . . . 
+            . . . . . . . . . . . . c . c . 
+            . . . a a . . . . . . c . c . . 
+            . . a a e e e e e e e e e e e . 
+            . . . . a . . . . . . c . c . . 
+            . . . . . . . . . . . . c . c . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
-            `, mySprite, 100, 0)
-    }
-    if (PEW_PEW_GO_THAT_WAY == 3) {
+            `, mySprite, -100, 0)
+    } else if (PEW_PEW_GO_THAT_WAY == 2) {
+        projectile = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . c . e . c . . . . . 
+            . . . . . . . c e c . . . . . . 
+            . . . . . . c . e . c . . . . . 
+            . . . . . . . c e c . . . . . . 
+            . . . . . . . . e . . . . . . . 
+            . . . . . . . . e . . . . . . . 
+            . . . . . . . . e . . . . . . . 
+            . . . . . . . . e . . . . . . . 
+            . . . . . . . . e . . . . . . . 
+            . . . . . . . . e . . . . . . . 
+            . . . . . . . a e a . . . . . . 
+            . . . . . . . a a . . . . . . . 
+            . . . . . . . . a . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, mySprite, 0, 100)
+    } else if (PEW_PEW_GO_THAT_WAY == 4) {
         projectile = sprites.createProjectileFromSprite(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
+            . . . . . . . a . . . . . . . . 
+            . . . . . . . a a . . . . . . . 
+            . . . . . . a e a . . . . . . . 
+            . . . . . . . e . . . . . . . . 
+            . . . . . . . e . . . . . . . . 
+            . . . . . . . e . . . . . . . . 
+            . . . . . . . e . . . . . . . . 
+            . . . . . . . e . . . . . . . . 
+            . . . . . . . e . . . . . . . . 
+            . . . . . . c e c . . . . . . . 
+            . . . . . c . e . c . . . . . . 
+            . . . . . . c e c . . . . . . . 
+            . . . . . c . e . c . . . . . . 
             . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . c . c . . . . . . . . . . . . 
-            . . c . c . . . . . . a a . . . 
-            . e e e e e e e e e e e a a . . 
-            . . c . c . . . . . . a . . . . 
-            . c . c . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, mySprite, 100, 0)
-    }
-    if (PEW_PEW_GO_THAT_WAY == 4) {
-        projectile = sprites.createProjectileFromSprite(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . c . c . . . . . . . . . . . . 
-            . . c . c . . . . . . a a . . . 
-            . e e e e e e e e e e e a a . . 
-            . . c . c . . . . . . a . . . . 
-            . c . c . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, mySprite, 100, 0)
-    }
-})
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (mySprite.vy == 0) {
-        mySprite.vy = -150
+            `, mySprite, 0, -100)
     }
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     PEW_PEW_GO_THAT_WAY = 3
+    mySprite.setImage(img`
+        . . . . . . . . . . . f f f . . 
+        . . f . . . . f f f f f f f f . 
+        . f a f . . f e d d e d d e f . 
+        f c a c f . f e f d e f d e f . 
+        f c c c f . f e f d e f d e f . 
+        . f c f f f f e e e e e e e f . 
+        f e e e e e e e e e e e e e f . 
+        . f f f f f f f f f f e e f . . 
+        . . . . . f e e e e e e e f . . 
+        . . . . . f e f e e e e e f . . 
+        . . . . . f e e e e e e e f . . 
+        . . . . f e e e e e e e f . . . 
+        . . . . f e e e e e e e f . . . 
+        . . . . f e e e e e e e f . . . 
+        . . . . f e e e e e e e f . . . 
+        . . . . f e e e e e e e f . . . 
+        `)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Door, function (sprite, otherSprite) {
+    tiles.placeOnTile(mySprite, tiles.getTileLocation(17, 12))
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     PEW_PEW_GO_THAT_WAY = 1
+    mySprite.setImage(img`
+        . . f f f . . . . . . . . . . . 
+        . f f f f f f f f . . . . f . . 
+        . f e d d e d d e f . . f a f . 
+        . f e d f e d f e f . f c a c f 
+        . f e d f e d f e f . f c c c f 
+        . f e e e e e e e f f f f c f . 
+        . f e e e e e e e e e e e e e f 
+        . . f e e f f f f f f f f f f . 
+        . . f e e e e e e e f . . . . . 
+        . . f e e e e e f e f . . . . . 
+        . . f e e e e e e e f . . . . . 
+        . . . f e e e e e e e f . . . . 
+        . . . f e e e e e e e f . . . . 
+        . . . f e e e e e e e f . . . . 
+        . . . f e e e e e e e f . . . . 
+        . . . f e e e e e e e f . . . . 
+        `)
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     PEW_PEW_GO_THAT_WAY = 2
+    mySprite.setImage(img`
+        . . f f f . . . . . . . . . . . 
+        . f f f f f f f f . . . . f . . 
+        . f e d d e d d e f . . f a f . 
+        . f e d d e d d e f . f c a c f 
+        . f e f f e f f e f . f c c c f 
+        . f e e e e e e e f f f f c f . 
+        . f e e e e e e e e e e e e e f 
+        . . f e e f f f f f f f f f f . 
+        . . f e e e e e e e f . . . . . 
+        . . f e e e e e f e f . . . . . 
+        . . f e e e e e e e f . . . . . 
+        . . . f e e e e e e e f . . . . 
+        . . . f e e e e e e e f . . . . 
+        . . . f e e e e e e e f . . . . 
+        . . . f e e e e e e e f . . . . 
+        . . . f e e e e e e e f . . . . 
+        `)
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile2`, function (sprite, location) {
+    game.gameOver(false)
 })
 let projectile: Sprite = null
+let Door: Sprite = null
 let PEW_PEW_GO_THAT_WAY = 0
 let mySprite: Sprite = null
 scene.setBackgroundImage(img`
@@ -246,3 +326,7 @@ tiles.setCurrentTilemap(tilemap`level2`)
 mySprite.ay = 300
 scene.cameraFollowSprite(mySprite)
 PEW_PEW_GO_THAT_WAY = 1
+for (let value of list) {
+    Door = sprites.create(assets.tile`myTile3`, SpriteKind.Door)
+    tiles.setTileAt(value, assets.tile`myTile3`)
+}
